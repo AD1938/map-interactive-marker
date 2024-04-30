@@ -13,10 +13,10 @@ type Location = {
 type MarkerWithAnimation = Location & { animation: google.maps.Animation | undefined };
 
 const initialLocations: MarkerWithAnimation[] = [
-  { lat: 43.8561, lng: -79.3370, name: 'Head Quarter Office (Markham)', address: '101, 200 Town Centre Boulevard, Markham, Ontario, Canada, L3R 8H8', phone: '+905-234-6666', email: 'info@wellcareinsurance.ca', animation: undefined },
-  { lat: 43.8477, lng: -79.3822, name: 'Markham Office', address: '703, 90 Allstate Parkway, Markham, ON L3R 6H3', phone: '+289-301-5887', animation: undefined },
-  { lat: 43.7725, lng: -79.3341, name: 'North York Office', address: '502, 200 Consumers Rd., North York, ON M2J 4R4', phone: '+289-301-5865', animation: undefined },
-  { lat: 43.7985, lng: -79.5335, name: 'Vaughan Office', address: '202, 11 Cidermill Ave, Vaughan, ON, L4K 4B6', phone: '+905-760-5007', animation: undefined }
+  { lat: 43.8561, lng: -79.3370, name: 'Head Quarter Office (Markham)', address: 'Unit 101, 200 Town Centre Boulevard, Markham, Ontario, Canada, L3R 8H8', phone: '+905-234-6666', email: 'info@wellcareinsurance.ca', animation: undefined },
+  { lat: 43.8477, lng: -79.3822, name: 'Markham Office', address: 'Unit 703, 90 Allstate Parkway, Markham, ON L3R 6H3', phone: '+289-301-5887', animation: undefined },
+  { lat: 43.7725, lng: -79.3341, name: 'North York Office', address: 'Unit 502, 200 Consumers Rd., North York, ON M2J 4R4', phone: '+289-301-5865', animation: undefined },
+  { lat: 43.7985, lng: -79.5335, name: 'Vaughan Office', address: 'Unit 202, 11 Cidermill Ave, Vaughan, ON, L4K 4B6', phone: '+905-760-5007', animation: undefined }
 ];
 
 const containerStyle = {
