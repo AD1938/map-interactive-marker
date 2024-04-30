@@ -5,14 +5,18 @@ type Location = {
   lat: number;
   lng: number;
   name: string;
+  address: string;
+  phone: string;
+  email?: string;
 };
 
 type MarkerWithAnimation = Location & { animation: google.maps.Animation | undefined };
 
-const initialLocations: Location[] = [
-  { lat: 37.7749, lng: -122.4194, name: 'San Francisco' },
-  { lat: 37.8049, lng: -122.2708, name: 'Oakland' },
-  { lat: 37.7599, lng: -122.4148, name: 'Mission District' }
+const initialLocations: MarkerWithAnimation[] = [
+  { lat: 43.8561, lng: -79.3370, name: 'Head Quarter Office (Markham)', address: '101, 200 Town Centre Boulevard, Markham, Ontario, Canada, L3R 8H8', phone: '+905-234-6666', email: 'info@wellcareinsurance.ca', animation: undefined },
+  { lat: 43.8477, lng: -79.3822, name: 'Markham Office', address: '703, 90 Allstate Parkway, Markham, ON L3R 6H3', phone: '+289-301-5887', animation: undefined },
+  { lat: 43.7725, lng: -79.3341, name: 'North York Office', address: '502, 200 Consumers Rd., North York, ON M2J 4R4', phone: '+289-301-5865', animation: undefined },
+  { lat: 43.7985, lng: -79.5335, name: 'Vaughan Office', address: '202, 11 Cidermill Ave, Vaughan, ON, L4K 4B6', phone: '+905-760-5007', animation: undefined }
 ];
 
 const containerStyle = {
@@ -21,23 +25,30 @@ const containerStyle = {
 };
 
 const MyGoogleMapComponent: React.FC = () => {
-  const [locations, setLocations] = useState<MarkerWithAnimation[]>(initialLocations.map(loc => ({ ...loc, animation: undefined })));
+  const [locations, setLocations] = useState<MarkerWithAnimation[]>(initialLocations);
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
-  const handleLocationSelect = (selectedLocation: MarkerWithAnimation) => {
-    const currentZoom = map?.getZoom() || 10;
-    const newZoom = currentZoom > 15 ? currentZoom : 15;
-
+  const handleLocationSelect = (location: MarkerWithAnimation) => {
     if (map) {
-      map.panTo(new google.maps.LatLng(selectedLocation.lat, selectedLocation.lng));
-      map.setZoom(newZoom);
+      map.panTo(new google.maps.LatLng(location.lat, location.lng));
+      map.setZoom(15);
     }
-  };
-
-  const handleMouseEnter = (location: Location) => {
     setLocations(locations.map(loc => ({
       ...loc,
-      animation: loc.lat === location.lat && loc.lng === location.lng ? google.maps.Animation.BOUNCE : undefined
+      animation: loc === location ? google.maps.Animation.BOUNCE : undefined
+    })));
+    setTimeout(() => {
+      setLocations(locations.map(loc => ({
+        ...loc,
+        animation: undefined
+      })));
+    }, 3000);
+  };
+
+  const handleLocationHover = (location: MarkerWithAnimation) => {
+    setLocations(locations.map(loc => ({
+      ...loc,
+      animation: loc === location ? google.maps.Animation.BOUNCE : undefined
     })));
   };
 
@@ -65,30 +76,23 @@ const MyGoogleMapComponent: React.FC = () => {
             <Marker
               key={`${location.lat}-${location.lng}`}
               position={{ lat: location.lat, lng: location.lng }}
-              onClick={() => handleLocationSelect(location)}
               animation={location.animation}
             />
           ))}
         </GoogleMap>
       </LoadScript>
-      <div style={{ marginLeft: '20px' }}>
-        <h3>Locations</h3>
-        <ul>
-          {locations.map(location => (
-            <li
-              key={`${location.lat}-${location.lng}`}
-              style={{ cursor: 'pointer', marginBottom: '10px' }}
-              onClick={() => handleLocationSelect(location)}
-              onMouseEnter={() => handleMouseEnter(location)}
-              onMouseLeave={handleMouseLeave}
-            >
-              {location.name}
-            </li>
-          ))}
-        </ul>
+      <div style={{ width: '400px', marginLeft: '20px', overflowY: 'auto', maxHeight: '400px' }}>
+        {locations.map(location => (
+          <div key={location.address} onMouseEnter={() => handleLocationHover(location)} onMouseLeave={handleMouseLeave} onClick={() => handleLocationSelect(location)} style={{ padding: '10px', border: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
+            <div style={{ fontWeight: 'bold' }}>{location.name}</div>
+            <div onClick={(e) => e.stopPropagation()}><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} target="_blank" rel="noopener noreferrer">{location.address}</a></div>
+            <div>{location.phone}</div>
+            {location.email && <div>{location.email}</div>}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-export default MyGoogleMapComponent;
+export default MyGoogleMapComponent
