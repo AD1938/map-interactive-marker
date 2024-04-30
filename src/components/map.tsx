@@ -45,6 +45,11 @@ const MyGoogleMapComponent: React.FC = () => {
     }, 3000);
   };
 
+  const handleMarkerClick = (location: MarkerWithAnimation) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`;
+    window.open(url, '_blank');
+  };
+
   const handleLocationHover = (location: MarkerWithAnimation) => {
     setLocations(locations.map(loc => ({
       ...loc,
@@ -77,17 +82,18 @@ const MyGoogleMapComponent: React.FC = () => {
               key={`${location.lat}-${location.lng}`}
               position={{ lat: location.lat, lng: location.lng }}
               animation={location.animation}
+              onClick = {() => handleMarkerClick(location)}
             />
           ))}
         </GoogleMap>
       </LoadScript>
-      <div style={{ width: '400px', marginLeft: '20px', overflowY: 'auto', maxHeight: '400px' }}>
+      <div style={{ width: '400px', marginLeft: '20px', overflowY: 'auto', maxHeight: '400px', paddingLeft: '10px' }}>
         {locations.map(location => (
           <div key={location.address} onMouseEnter={() => handleLocationHover(location)} onMouseLeave={handleMouseLeave} onClick={() => handleLocationSelect(location)} style={{ padding: '10px', border: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
-            <div style={{ fontWeight: 'bold' }}>{location.name}</div>
+            <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px'  }}>{location.name}</div>
             <div onClick={(e) => e.stopPropagation()}><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} target="_blank" rel="noopener noreferrer">{location.address}</a></div>
-            <div>{location.phone}</div>
-            {location.email && <div>{location.email}</div>}
+            <div style={{color: '#666', marginBottom: '5px'}}>{location.phone}</div>
+            {location.email && <div style={{ color: '#666' }}>{location.email}</div>}
           </div>
         ))}
       </div>
