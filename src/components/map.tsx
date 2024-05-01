@@ -21,7 +21,7 @@ const initialLocations: MarkerWithAnimation[] = [
 
 const containerStyle = {
   width: '600px',
-  height: '400px'
+  height: '550px'
 };
 
 const MyGoogleMapComponent: React.FC = () => {
@@ -87,12 +87,29 @@ const MyGoogleMapComponent: React.FC = () => {
           ))}
         </GoogleMap>
       </LoadScript>
-      <div style={{ width: '400px', marginLeft: '20px', overflowY: 'auto', maxHeight: '400px', paddingLeft: '10px' }}>
+      <div style={{ width: '400px', marginLeft: '20px', /*overflowY: 'auto', */maxHeight: '550px', paddingLeft: '10px' }}>
         {locations.map(location => (
-          <div key={location.address} onMouseEnter={() => handleLocationHover(location)} onMouseLeave={handleMouseLeave} onClick={() => handleLocationSelect(location)} style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
-            <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px'  }}>{location.name}</div>
-            <div onClick={(e) => e.stopPropagation()}><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} target="_blank" rel="noopener noreferrer">{location.address}</a></div>
-            <div style={{color: '#666', marginBottom: '5px'}}>{location.phone}</div>
+          <div 
+            key={location.address} 
+            onMouseEnter={() => handleLocationHover(location)} 
+            onMouseLeave={handleMouseLeave} 
+            onClick={() => handleLocationSelect(location)} 
+            style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
+            <div
+             style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px'  }}>
+              {location.name}
+            </div>
+            <div 
+              onClick={(e) => e.stopPropagation()}>
+                <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} 
+                target="_blank" 
+                rel="noopener noreferrer">{location.address}</a>
+            </div>
+            <div 
+            style={{color: '#666', marginBottom: '5px'}}>
+              {location.phone}
+              </div>
             {location.email && <div style={{ color: '#666' }}>{location.email}</div>}
           </div>
         ))}
