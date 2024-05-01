@@ -82,34 +82,39 @@ const MyGoogleMapComponent: React.FC = () => {
               key={`${location.lat}-${location.lng}`}
               position={{ lat: location.lat, lng: location.lng }}
               animation={location.animation}
-              onClick = {() => handleMarkerClick(location)}
+              onClick={() => handleMarkerClick(location)}
             />
           ))}
         </GoogleMap>
       </LoadScript>
       <div style={{ width: '400px', marginLeft: '20px', /*overflowY: 'auto', */maxHeight: '550px', paddingLeft: '10px' }}>
         {locations.map(location => (
-          <div 
-            key={location.address} 
-            onMouseEnter={() => handleLocationHover(location)} 
-            onMouseLeave={handleMouseLeave} 
-            onClick={() => handleLocationSelect(location)} 
-            style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
-            <div
-             style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px'  }}>
+          <div
+            key={location.address}
+            onMouseEnter={() => handleLocationHover(location)}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => handleLocationSelect(location)}
+            style={{
+              padding: '10px',
+              borderBottom: '1px solid #ccc',
+              marginBottom: '10px',
+              cursor: 'pointer',
+              backgroundColor: location.animation ? '#f2f2f2' : 'transparent' // Add background color when animation is active
+            }}
+          >
+            <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px' }}>
               {location.name}
             </div>
-            <div 
-              onClick={(e) => e.stopPropagation()}>
-                <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} 
-                target="_blank" 
-                rel="noopener noreferrer">{location.address}</a>
+            <div onClick={(e) => e.stopPropagation()}>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {location.address}
+              </a>
             </div>
-            <div 
-            style={{color: '#666', marginBottom: '5px'}}>
-              {location.phone}
-              </div>
+            <div style={{ color: '#666', marginBottom: '5px' }}>{location.phone}</div>
             {location.email && <div style={{ color: '#666' }}>{location.email}</div>}
           </div>
         ))}
