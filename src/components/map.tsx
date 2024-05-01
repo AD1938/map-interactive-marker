@@ -89,7 +89,7 @@ const MyGoogleMapComponent: React.FC = () => {
       </LoadScript>
       <div style={{ width: '400px', marginLeft: '20px', overflowY: 'auto', maxHeight: '400px', paddingLeft: '10px' }}>
         {locations.map(location => (
-          <div key={location.address} onMouseEnter={() => handleLocationHover(location)} onMouseLeave={handleMouseLeave} onClick={() => handleLocationSelect(location)} style={{ padding: '10px', border: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
+          <div key={location.address} onMouseEnter={() => handleLocationHover(location)} onMouseLeave={handleMouseLeave} onClick={() => handleLocationSelect(location)} style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '10px', cursor: 'pointer' }}>
             <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px'  }}>{location.name}</div>
             <div onClick={(e) => e.stopPropagation()}><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`} target="_blank" rel="noopener noreferrer">{location.address}</a></div>
             <div style={{color: '#666', marginBottom: '5px'}}>{location.phone}</div>
