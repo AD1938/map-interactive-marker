@@ -16,8 +16,9 @@ const initialLocations: MarkerWithAnimation[] = [
   { lat: 43.8581514, lng: -79.3402475, name: 'Head Office', address: 'Unit 101, 200 Town Centre Boulevard, Markham, Ontario, Canada, L3R 8H8', phone: '+905-234-6666', email: 'info@wellcareinsurance.ca', animation: undefined },
   { lat: 43.8537388, lng: -79.369347, name: 'Markham West', address: 'Unit 703, 90 Allstate Parkway, Markham, ON L3R 6H3', phone: '+289-301-5887', animation: undefined },
   { lat: 43.7728107, lng: -79.3310703, name: 'North York Consumers Office', address: 'Unit 502, 200 Consumers Rd., North York, ON M2J 4R4', phone: '+289-301-5865', animation: undefined },
+  { lat: 43.8056598, lng: -79.3405279, name: 'North York Tempo Office', address: ' Suite310 - 100 TEMPO AVE, NORTH YORK,  ON, M2H 2N8', phone: '+647-643-1992', animation: undefined },
   { lat: 43.8054131, lng: -79.5277074, name: 'Vaughan Office', address: 'Unit 202, 11 Cidermill Ave, Vaughan, ON, L4K 4B6', phone: '+905-760-5007', animation: undefined },
-  { lat: 43.8056598, lng: -79.3405279, name: 'North York Tempo Office', address: ' Suite310 - 100 TEMPO AVE, NORTH YORK,  ON, M2H 2N8', phone: '+647-643-1992', animation: undefined }
+
 ];
 
 const containerStyle = {
