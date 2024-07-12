@@ -86,7 +86,7 @@ const MyGoogleMapComponent: React.FC = () => {
         >
           {locations.map(location => (
             <Marker
-              // key={`${location.lat}-${location.lng}`}
+              key={`${location.lat}-${location.lng}`}
               position={{ lat: location.lat, lng: location.lng }}
               animation={location.animation}
               onClick={() => handleMarkerClick(location)}
