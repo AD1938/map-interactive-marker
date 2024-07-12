@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 type Location = {
@@ -17,11 +17,10 @@ const initialLocations: MarkerWithAnimation[] = [
   { lat: 42.9762946, lng: -81.2406115, name: 'London Office', address: '302-120 Wellington St, London, ON, N6B 2K6', phone: '+905-234-6666', email: 'info@wellcareinsurance.ca', animation: undefined },
   { lat: 43.8537388, lng: -79.369347, name: 'Markham West', address: 'Unit 703, 90 Allstate Parkway, Markham, ON L3R 6H3', phone: '+289-301-5887', animation: undefined },
   { lat: 43.7728107, lng: -79.3310703, name: 'North York Consumers Office', address: 'Unit 502, 200 Consumers Rd., North York, ON M2J 4R4', phone: '+289-301-5865', animation: undefined },
-  { lat: 43.8056598, lng: -79.3405279, name: 'North York Tempo Office', address: ' Suite 310, 100 TEMPO AVE, NORTH YORK,  ON, M2H 2N8', phone: '+647-643-1992', animation: undefined },
+  { lat: 43.8056598, lng: -79.3405279, name: 'North York Tempo Office', address: 'Suite 310, 100 TEMPO AVE, NORTH YORK, ON, M2H 2N8', phone: '+647-643-1992', animation: undefined },
   { lat: 45.3695035, lng: -75.7044042, name: 'Ottawa Office', address: '101K-900 Dynes Road, Ottawa, ON', phone: '+905-234-6666', animation: undefined }, 
-  { lat: 43.850908, lng: -79.3871378, name: 'Richmond Hill Office', address: ' Suite 212, 9040 Leslie St, Richmond Hill,  ON, L4B 3M4', phone: '+647-643-1992', animation: undefined },
+  { lat: 43.850908, lng: -79.3871378, name: 'Richmond Hill Office', address: 'Suite 212, 9040 Leslie St, Richmond Hill, ON, L4B 3M4', phone: '+647-643-1992', animation: undefined },
   { lat: 43.8054131, lng: -79.5277074, name: 'Vaughan Office', address: 'Unit 202, 11 Cidermill Ave, Concord, ON, L4K 4B6', phone: '+905-760-5007', animation: undefined },
-
 ];
 
 const containerStyle = {
@@ -31,12 +30,12 @@ const containerStyle = {
 
 const MyGoogleMapComponent: React.FC = () => {
   const [locations, setLocations] = useState<MarkerWithAnimation[]>(initialLocations);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
 
   const handleLocationSelect = (location: MarkerWithAnimation) => {
-    if (map) {
-      map.panTo(new google.maps.LatLng(location.lat, location.lng));
-      map.setZoom(15);
+    if (mapRef.current) {
+      mapRef.current.panTo(new google.maps.LatLng(location.lat, location.lng));
+      mapRef.current.setZoom(15);
     }
     setLocations(locations.map(loc => ({
       ...loc,
@@ -70,7 +69,12 @@ const MyGoogleMapComponent: React.FC = () => {
   };
 
   const onLoad = (mapInstance: google.maps.Map) => {
-    setMap(mapInstance);
+    mapRef.current = mapInstance;
+    const bounds = new google.maps.LatLngBounds();
+    initialLocations.forEach(location => {
+      bounds.extend({ lat: location.lat, lng: location.lng });
+    });
+    mapInstance.fitBounds(bounds);
   };
 
   return (
@@ -78,13 +82,11 @@ const MyGoogleMapComponent: React.FC = () => {
       <LoadScript googleMapsApiKey="AIzaSyCJ-K9bkSkIGT7FG-JOIMj5x-wU2CCncqI">
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={initialLocations[0]}
-          zoom={10}
           onLoad={onLoad}
         >
           {locations.map(location => (
             <Marker
-              key={`${location.lat}-${location.lng}`}
+              // key={`${location.lat}-${location.lng}`}
               position={{ lat: location.lat, lng: location.lng }}
               animation={location.animation}
               onClick={() => handleMarkerClick(location)}
@@ -92,7 +94,7 @@ const MyGoogleMapComponent: React.FC = () => {
           ))}
         </GoogleMap>
       </LoadScript>
-      <div style={{ width: '400px', marginLeft: '20px', /*overflowY: 'auto', */maxHeight: '550px', paddingLeft: '10px' }}>
+      <div style={{ width: '400px', marginLeft: '20px', maxHeight: '550px', paddingLeft: '10px' }}>
         {locations.map(location => (
           <div
             key={location.address}
@@ -104,7 +106,7 @@ const MyGoogleMapComponent: React.FC = () => {
               borderBottom: '1px solid #ccc',
               marginBottom: '10px',
               cursor: 'pointer',
-              backgroundColor: location.animation ? '#f2f2f2' : 'transparent' // Add background color when animation is active
+              backgroundColor: location.animation ? '#f2f2f2' : 'transparent'
             }}
           >
             <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '8px' }}>
@@ -128,4 +130,4 @@ const MyGoogleMapComponent: React.FC = () => {
   );
 }
 
-export default MyGoogleMapComponent
+export default MyGoogleMapComponent;
